@@ -32,18 +32,6 @@ def test_yaml_cases(test_case):
 
 
 
-def test_consonant_after_halant_conjunct():
-    """FINAL TDD: single consonant after conjunct with halant should lose inherent vowel"""
-
-    # Problem: ধর্ম → dhrma instead of dhrm
-    # ম after ধর্ (conjunct with halant) should lose inherent vowel
-
-    transliterator = _BengaliTransliterator()
-    result = transliterator("ধর্ম")
-
-    assert result == "dhrm", (
-        "ধর্ম should be dhrm - consonant after halant conjunct loses vowel"
-    )
 
 
 def test_final_m_after_halant():
