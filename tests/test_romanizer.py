@@ -31,17 +31,8 @@ from bengali_romanizer.lexer import Lexer
         # Diphthongs - moved to YAML
         # Rare vowels, nukta consonants, edge cases - moved to YAML
         # Additional regression tests - moved to YAML
-        ("বৈষ্ণবীয়", "baiṣṇabīy"),
-        ("মধ্যযুগীয়", "mdhyayugīy"),  # Corrected: no ā in original text
-        ("বাংলায়", "bāṅlāy"),
-        ("পৌঁছে", "pauṅche"),
-        # Debug tests for conjunct processing
-        ("ধর্", "dhr"),  # Simple conjunct should be dhr not dhar
-        ("ধর্ম", "dhrm"),  # Conjunct + consonant should be dhrm not dharm
-        ("ধর্মী", "dhrmī"),  # Conjunct + consonant + vowel should be dhrmī not dharmī
-        # Debug syllable tokenization
-        ("ধ", "dha"),  # Single consonant
-        ("র", "ra"),  # Single consonant
+        # Complex regression and debug tests - moved to YAML
+        # Debug syllable tokenization - moved to YAML
         
         # Multi-word tests
         ("বাংলা ভাষা", "bāṅlā bhāṣā"),  # Bengali language - test spaces

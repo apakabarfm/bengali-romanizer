@@ -31,6 +31,18 @@ conjunct_consonants:
   - title: "Complex word with conjunct"
     input: "ভক্তি"
     expected: "bhakti"
+  
+  - title: "Conjunct with halant"
+    input: "ধর্"
+    expected: "dhr"
+  
+  - title: "Conjunct plus consonant"
+    input: "ধর্ম"
+    expected: "dhrm"
+  
+  - title: "Conjunct plus consonant with vowel"
+    input: "ধর্মী"
+    expected: "dhrmī"
 
 nukta_consonants:
   - title: "Nukta retroflex"
@@ -85,6 +97,14 @@ edge_cases:
   - title: "Single consonant at word end"
     input: "দ"
     expected: "da"
+  
+  - title: "Single DH consonant"
+    input: "ধ"
+    expected: "dha"
+  
+  - title: "Single R consonant"
+    input: "র"
+    expected: "ra"
 
 regression_tests:
   - title: "Morning related word"
