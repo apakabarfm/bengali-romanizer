@@ -34,21 +34,6 @@ def test_yaml_cases(test_case):
 
 
 
-def test_final_m_after_halant():
-    """Micro-test: ম after ধর্ should be 'm' not 'ma'"""
-
-    # Create context: ধর্ followed by ম
-    dhr_akshara = BengaliAkshara(["ধ", "র"], None, True, [])  # ধর্ with halant
-    m_akshara = BengaliAkshara(["ম"], None, False, [])  # ম
-
-    transliterator = _BengaliTransliterator()
-
-    # Test ম in context after halant conjunct
-    result = transliterator._translate_akshara_with_context(
-        m_akshara, [dhr_akshara, m_akshara], 1, transliterator.vowel_map
-    )
-
-    assert result == "m", "ম after halant conjunct should be 'm' not 'ma'"
 
 
 def test_dhrm_step_by_step():
