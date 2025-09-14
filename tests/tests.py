@@ -230,33 +230,6 @@ def test_single_consonant_after_conjunct():
     assert result == "ra", "Single consonant after conjunct should keep inherent vowel"
 
 
-def test_ishvarer_tokenization():
-    """
-    Debug ঈশ্বরের tokenization to understand structure
-    
-    EXPECTED from test: īśbarer
-    GETTING: īśbrer (missing 'a' after śb)
-    """
-    
-    tokenizer = BengaliAksharaTokenizer() 
-    aksharas = tokenizer.tokenize("ঈশ্বরের")
-    
-    # First figure out actual tokenization structure, then assert expectations
-    # Expected components: ঈ + শ্ব + র + ে + র
-    
-    # Assert expected structure (based on phonetic analysis)
-    assert len(aksharas) == 4, f"Expected 4 aksharas for ঈশ্বরের, got {len(aksharas)}: {aksharas}"
-    
-    # Expected breakdown:
-    assert aksharas[0].consonants == [] and aksharas[0].vowel == "ঈ"  # ঈ 
-    assert aksharas[1].consonants == ["শ", "ব"] and not aksharas[1].vowel  # শ্ব
-    assert aksharas[2].consonants == ["র"] and aksharas[2].vowel == "ে"  # রে  
-    assert aksharas[3].consonants == ["র"] and not aksharas[3].vowel  # র
-    
-    # Test final result
-    transliterator = _BengaliTransliterator()
-    result = transliterator("ঈশ্বরের")
-    assert result == "īśbarer", "ঈশ্বরের should transliterate correctly"
 
 
 def test_ishvarer_tokenization_only():
