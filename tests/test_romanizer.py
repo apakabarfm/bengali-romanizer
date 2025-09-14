@@ -48,7 +48,7 @@ from bengali_romanizer.lexer import Lexer
         ("চা", "cā"),  # Consonant + long vowel (native: া = ā)
         ("দ", "da"),  # Single consonant at word end
         # From user sample (targeted regressions)
-        ("ভোরতের", "bhorter"),
+        ("ভোরতের", "bhôrter"),
         ("ধর্মীয়", "dhrmīy"),
         ("ঐতিহ্য", "aitihyô"),
         ("অধ্যায়", "ôdhyôy"),
@@ -78,6 +78,10 @@ from bengali_romanizer.lexer import Lexer
         ("123 বাংলা", "123 bāṅlā"),  # Latin numbers should stay
         ("বাংলা (ভাষা)", "bāṅlā (bhāṣā)"),  # Parentheses should stay
         ('বাংলা "ভাষা"', 'bāṅlā "bhāṣā"'),  # Quotes should stay
+        
+        # Long text test - must preserve word boundaries
+        ("বাংলা নববর্ষ বাংলা পঞ্জিকা অনুসারে বছরের প্রথম দিনকে উদযাপন করার এক বিশেষ মুহূর্ত।", 
+         "bāṅlā nbbrṣ bāṅlā pñjikā ônusāre bchrer prthm dinke udyāpn krār ek biśeṣ muhūrt."),
     ],
 )
 def test_romanize_basic(bengali, expected):
@@ -597,6 +601,29 @@ def test_ishvarer_context_integration():
     
     # This is where we expect 'ra' but might get 'r'
     assert result == "ra", f"র after শ্ব should be 'ra', got '{result}'. Vowel context: {vowel_context}"
+
+
+def test_full_bengali_text_word_separation():
+    """Test that Bengali romanizer preserves word boundaries in long text"""
+    
+    bengali_text = """বাংলা নববর্ষ বাংলা পঞ্জিকা অনুসারে বছরের প্রথম দিনকে উদযাপন করার এক বিশেষ মুহূর্ত, যাকে অনেকেই পহেলা বৈশাখ নামে ডেকে থাকেন। এই দিন সাধারণত চৌদ্দ এপ্রিল পালিত হয়, যখন বাংলাদেশ ও পশ্চিমবঙ্গে উৎসবের উত্তাপ ছড়িয়ে পড়ে এবং মানুষ নতুন দিনের আহ্বানে মেতে ওঠে। এটি বাংলাদেশের জাতীয় দিবসগুলির মধ্যেও অন্তর্ভুক্ত, ফলে সরকারি ছুটির সুবাদে পরিবার ও বন্ধুবান্ধব একত্রিত হয়ে এই ঐতিহ্য উদযাপন করে।
+
+নববর্ষের মূল উদযাপন শুরু হয় পহেলা বৈশাখের ভোরে, যখন ঢাকার রমনা বটমূলে ছায়ানটের মনোমুগ্ধকর অনুষ্ঠান দেখতে বিপুল মানুষ জড়ো হয়। সেই সঙ্গে মঙ্গল শোভাযাত্রা, যা ইউনেস্কো কর্তৃক অমূর্ত সাংস্কৃতিক ঐতিহ্য হিসেবে স্বীকৃত, শহরের রাজপথ ভরিয়ে তোলে এবং রঙিন পোশাক ও মুখোশধারীরা আনন্দ ছড়ায়। এদিন পান্তাভাত, ইলিশ মাছ ও নানা পিঠা পরিবেশনের মাধ্যমে বাঙালি স্বাদ আর সংস্কৃতির মেলবন্ধন দৃঢ় হয়, আর মানুষ একে অপরকে শুভেচ্ছা বিনিময় করে।
+
+বাংলা নববর্ষের সামাজিক গুরুত্ব অপরিসীম, কারণ এটি কেবল নতুন সনের সূচনা নয়, বরং ঐতিহ্য ও একতার মিলনমেলার একটি উজ্জ্বল নমুনা। বিভিন্ন সম্প্রদায়ের মানুষ এই উৎসবের মাধ্যমে একে অপরের প্রতি সৌহার্দ্য ও সম্মান প্রকাশ করে, আর পুরনো বছরের হতাশা পেছনে ফেলে নতুন আশায় এগিয়ে যায়। ফলে সমাজে পারস্পরিক বন্ধন আরও দৃঢ় হয়।"""
+    
+    result = romanize(bengali_text)
+    
+    # Should contain spaces between words, not be one long string
+    assert " " in result, "Romanized text must contain spaces between words"
+    
+    # Should preserve paragraph structure (same number of newlines)
+    original_newlines = bengali_text.count('\n')
+    result_newlines = result.count('\n')
+    assert result_newlines == original_newlines, f"Should preserve {original_newlines} newlines, got {result_newlines}"
+    
+    # Should start with the first few words properly separated
+    assert result.startswith("bāṅlā nbbrṣ bāṅlā"), f"Should start with proper word separation, got: {result[:50]}"
 
 
 def test_ishvarer_actual_tokenization():

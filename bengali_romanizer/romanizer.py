@@ -369,15 +369,18 @@ class _BengaliTransliterator:
                 i += 1
                 continue
                 
-            # Check if this is start of Bengali text
-            if char in self.tokenizer.CONSONANTS or char in self.tokenizer.INDEPENDENT_VOWELS:
+            # Check if this is start of Bengali text (including nukta consonants)
+            if (char in self.tokenizer.CONSONANTS or 
+                char in self.tokenizer.INDEPENDENT_VOWELS or
+                (i + 1 < len(text) and char + text[i+1] in ['ড়', 'ঢ়', 'য়'])):
                 # Extract Bengali word
                 word_start = i
                 while i < len(text) and (text[i] in self.tokenizer.CONSONANTS or 
                                        text[i] in self.tokenizer.INDEPENDENT_VOWELS or
                                        text[i] in self.tokenizer.VOWEL_SIGNS or
                                        text[i] in self.tokenizer.SPECIAL_MARKS or
-                                       text[i] == self.tokenizer.HALANT):
+                                       text[i] == self.tokenizer.HALANT or
+                                       text[i] == '়'):
                     i += 1
                     
                 bengali_word = text[word_start:i]
