@@ -1,46 +1,34 @@
+from pathlib import Path
+
 import pytest
-import unicodedata
+import yaml
+
 from bengali_romanizer import romanize
-from bengali_romanizer.romanizer import (
-    BengaliAksharaTokenizer,
-    BengaliAkshara,
-    _BengaliTransliterator,
-)
 from bengali_romanizer.lexer import Lexer
+from bengali_romanizer.romanizer import BengaliAksharaTokenizer, BengaliAkshara, _BengaliTransliterator
 
 
-# All basic parametrized tests moved to YAML (test_yaml_cases.py)
+def load_test_cases():
+    """Load test cases from YAML file"""
+    yaml_file = Path(__file__).parent / "test_cases.yaml"
+    with open(yaml_file, 'r', encoding='utf-8') as f:
+        return yaml.safe_load(f)
 
 
-def test_bengali_syllable_tokenization():
-    """Test akshara tokenization step by step"""
-    tokenizer = BengaliAksharaTokenizer()
+@pytest.mark.parametrize("test_case", [
+    case for category in load_test_cases().values()
+    for case in category
+])
+def test_yaml_cases(test_case):
+    """Test Bengali romanization using YAML test cases"""
+    if 'skip' in test_case:
+        pytest.skip(test_case['skip'])
 
-    # Test character analysis first
-    text = "ধর্"
-    print(f"Input text: '{text}' = {[c for c in text]}")
-    print(f"Text length: {len(text)}")
-    for i, char in enumerate(text):
-        print(f"  [{i}]: '{char}' (U+{ord(char):04X})")
-        print(f"    - Is consonant: {char in tokenizer.CONSONANTS}")
-        print(f"    - Is halant: {char == tokenizer.HALANT}")
+    result = romanize(test_case['input'])
+    assert result == test_case['expected'], f"Test: {test_case['title']}"
 
-    # Test lexer behavior
-    lexer = Lexer(text)
-    print("\nLexer analysis:")
-    print(
-        f"  pos=0: peek()='{lexer.peek()}', peek(1)='{lexer.peek(1)}', peek(2)='{lexer.peek(2)}'"
-    )
 
-    # Test tokenization for different cases
-    test_cases = ["ধর্", "ধর্ম", "ধর্মী", "ধর্মীয়", "ভক্তি"]
-    for case in test_cases:
-        syllables = tokenizer.tokenize(case)
-        print(f"\nSyllables for '{case}': {syllables}")
-        for i, syl in enumerate(syllables):
-            print(
-                f"  [{i}]: consonants={syl.consonants}, halant={syl.ending_halant}, vowel={syl.vowel}"
-            )
+# Deleted debug test with prints - functionality covered by YAML tests
 
 
 def test_bengali_akshara_translation_methods():
