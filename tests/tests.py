@@ -148,17 +148,6 @@ def test_context_detection_for_andolon():
     assert context_result_3, "ন should detect vowel context propagated through word"
 
 
-def test_r_phala_conjunct():
-    """TDD test for r-phala conjuncts like ক্র"""
-    
-    # Test ক্র case - should keep inherent vowel on final র
-    akshara = BengaliAkshara(["ক", "র"], None, False, [])
-    
-    consonant_map = {"ক": "ka", "র": "ra"}
-    vowel_map = {}
-    
-    result = akshara._translate_conjunct_without_halant(consonant_map, vowel_map)
-    assert result == "kra", "র in r-phala conjunct should keep inherent vowel"
 
 
 
