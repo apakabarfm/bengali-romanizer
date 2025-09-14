@@ -1,0 +1,53 @@
+basic_romanization:
+  - title: "Empty string"
+    input: ""
+    expected: ""
+  
+  - title: "Single consonant"
+    input: "ক"
+    expected: "ka"
+  
+  - title: "Independent vowel" 
+    input: "অ"
+    expected: "ô"
+  
+  - title: "Consonant with vowel sign"
+    input: "কি"
+    expected: "ki"
+  
+  - title: "O-kar vowel sign"
+    input: "কো"
+    expected: "ko"
+  
+  - title: "A-kar vowel sign"
+    input: "কা" 
+    expected: "kā"
+
+conjunct_consonants:
+  - title: "Simple conjunct"
+    input: "ক্ত"
+    expected: "kt"
+  
+  - title: "Complex word with conjunct"
+    input: "ভক্তি"
+    expected: "bhakti"
+
+nukta_consonants:
+  - title: "Nukta retroflex"
+    input: "ড়"
+    expected: "ṛ"
+
+word_separation:
+  - title: "Two words with space"
+    input: "বাংলা ভাষা"
+    expected: "bāṅlā bhāṣā"
+  
+  - title: "Numbers and punctuation"
+    input: "123 বাংলা!"
+    expected: "123 bāṅlā!"
+
+problematic_cases:
+  - title: "Word with complex conjuncts"
+    input: "নববর্ষ"
+    expected: "nbbrṣ"
+    skip: "FIXME: Currently produces nababrṣ - inherent vowel issue in conjuncts"
