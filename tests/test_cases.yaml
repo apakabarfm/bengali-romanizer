@@ -102,6 +102,18 @@ regression_tests:
   - title: "Chapter word"
     input: "অধ্যায়"
     expected: "ôdhyôy"
+  
+  - title: "Fourteenth"
+    input: "চতুর্দশ"
+    expected: "caturdaś"
+  
+  - title: "Sixteen"
+    input: "ষোড়শ"
+    expected: "ṣoṛś"
+  
+  - title: "Gods"
+    input: "ঈশ্বরের"
+    expected: "īśbarer"
 
 word_separation:
   - title: "Two words with space"

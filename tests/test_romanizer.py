@@ -30,11 +30,7 @@ from bengali_romanizer.lexer import Lexer
         # Nasalization & special signs - moved to YAML
         # Diphthongs - moved to YAML
         # Rare vowels, nukta consonants, edge cases - moved to YAML
-        # Regression tests - moved to YAML
-        ("চতুর্দশ", "caturdaś"),
-        ("ষোড়শ", "ṣoṛś"),
-        ("ঈশ্বরের", "īśbarer"),
-        ("উজাড়", "ujāṛ"),
+        # Additional regression tests - moved to YAML
         ("বৈষ্ণবীয়", "baiṣṇabīy"),
         ("মধ্যযুগীয়", "mdhyayugīy"),  # Corrected: no ā in original text
         ("বাংলায়", "bāṅlāy"),
