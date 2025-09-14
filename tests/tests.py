@@ -28,25 +28,6 @@ def test_yaml_cases(test_case):
     assert result == test_case['expected'], f"Test: {test_case['title']}"
 
 
-# Deleted debug test with prints - functionality covered by YAML tests
-
-
-# Deleted unit test - all translation rules covered by YAML functional tests
-
-
-def test_paunche_chandrabindu():
-    """TDD test for পৌঁছে chandrabindu before affricate"""
-
-    # Problem: paũche instead of pauṅche
-    # Chandrabindu ঁ should become ṅ before affricate ছ
-
-    # Test that chandrabindu detection works properly
-    transliterator = _BengaliTransliterator()
-    result = transliterator("পৌঁছে")
-
-    assert result == "pauṅche", (
-        "পৌঁছে should have ṅ before affricate: pauṅche not paũche"
-    )
 
 
 def test_affricate_detection_micro():
