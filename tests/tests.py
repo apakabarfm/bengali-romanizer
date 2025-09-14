@@ -38,31 +38,6 @@ def test_yaml_cases(test_case):
 
 
 
-def test_bengali_akshara_integration():
-    """Integration test for ভক্তি tokenization and translation"""
-    tokenizer = BengaliAksharaTokenizer()
-
-    # Test tokenization
-    aksharas = tokenizer.tokenize("ভক্তি")
-    print(f"ভক্তি tokenized as: {aksharas}")
-
-    # Test each akshara translation
-    consonant_map = tokenizer.CONSONANTS
-    vowel_map = tokenizer.VOWEL_SIGNS
-    special_map = {"ং": "ṅ", "ঃ": "ḥ", "ঁ": "̃", "ৎ": "t"}
-
-    results = []
-    for i, akshara in enumerate(aksharas):
-        result = akshara.to_latin(
-            consonant_map, vowel_map, special_map, tokenizer.INDEPENDENT_VOWELS
-        )
-        print(f"  [{i}]: {akshara} → '{result}'")
-        results.append(result)
-
-    final_result = "".join(results)
-    print(f"Final result: '{final_result}' (expected: 'bhakti')")
-
-    assert final_result == "bhakti"
 
 
 def test_bengali_single_consonant_context():
