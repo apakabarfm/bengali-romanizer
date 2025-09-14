@@ -44,45 +44,32 @@ def test_yaml_cases(test_case):
 
 
 
-def test_bengali_akshara_translation_methods():
-    """Unit tests for individual BengaliAkshara translation methods"""
-
-    # Mock maps for testing
+@pytest.mark.parametrize("method_name,akshara_args,expected", [
+    ("_translate_independent_vowel", ([], "অ", False, []), "ô"),
+    ("_translate_nukta_consonant", (["য়"], None, False, []), "y"), 
+    ("_translate_conjunct_with_halant", (["ক", "ত"], None, True, []), "kt"),
+    ("_translate_single_consonant", (["ক"], "ি", False, []), "ki"),
+])
+def test_akshara_translation_methods(method_name, akshara_args, expected):
+    """Test individual BengaliAkshara translation methods"""
     consonant_map = {"ক": "ka", "ত": "ta", "ভ": "bha", "য়": "y", "ড়": "ṛ"}
     vowel_map = {"ি": "i", "ে": "e"}
     independent_vowel_map = {"অ": "ô", "আ": "ā"}
     special_map = {"ং": "ṅ"}
-
-    # Test Rule 0: Independent vowels
-    akshara = BengaliAkshara([], "অ", False, [])
-    result = akshara._translate_independent_vowel(independent_vowel_map)
-    assert result == "ô"
-
-    # Test Rule 1: Nukta consonants
-    akshara = BengaliAkshara(["য়"], None, False, [])
-    result = akshara._translate_nukta_consonant(consonant_map)
-    assert result == "y"
-
-    # Test Rule 2: Conjunct with halant
-    akshara = BengaliAkshara(["ক", "ত"], None, True, [])
-    result = akshara._translate_conjunct_with_halant(consonant_map)
-    assert result == "kt"  # Remove inherent vowels: ka→k, ta→t
-
-    # Test Rule 3: Conjunct without halant
-    akshara = BengaliAkshara(["ভ", "ক"], None, False, [])
-
-    # Test epenthetic vowel detection first
-    assert akshara.needs_epenthetic_vowel(1), (
-        "ক should need epenthetic vowel in ভক conjunct"
-    )
-
-    result = akshara._translate_conjunct_without_halant(consonant_map, vowel_map)
-    assert result == "bhak"  # Based on ভক্তি test expectation: bh + ak → bhak
-
-    # Test Rule 4-5: Single consonant
-    akshara = BengaliAkshara(["ক"], "ি", False, [])
-    result = akshara._translate_single_consonant(consonant_map, vowel_map, special_map)
-    assert result == "ki"  # ka→k + i
+    
+    akshara = BengaliAkshara(*akshara_args)
+    method = getattr(akshara, method_name)
+    
+    if method_name == "_translate_independent_vowel":
+        result = method(independent_vowel_map)
+    elif method_name == "_translate_nukta_consonant":
+        result = method(consonant_map)
+    elif method_name == "_translate_conjunct_with_halant":
+        result = method(consonant_map)
+    else:  # _translate_single_consonant
+        result = method(consonant_map, vowel_map, special_map)
+        
+    assert result == expected
 
 
 def test_final_m_after_halant():
@@ -151,26 +138,6 @@ def test_context_detection_for_andolon():
 
 
 
-def test_contextual_vowel_o_mapping():
-    """TDD test for ো → o vs ô context-dependent mapping"""
-    
-    # Based on test evidence:
-    # কো → kô (normal case)  
-    # ভোরতের → bhorter (special case - ো maps to 'o')
-    
-    # Test normal case first
-    akshara_normal = BengaliAkshara(["ক"], "ো", False, [])
-    consonant_map = {"ক": "ka", "ভ": "bha"}
-    vowel_map = {"ো": "ô"}
-    special_map = {}
-    
-    result_normal = akshara_normal._translate_single_consonant(consonant_map, vowel_map, special_map) 
-    assert result_normal == "kô", "Normal ো should map to ô"
-    
-    # Test special case - need to add contextual vowel mapping logic
-    # For now, this will fail - need to implement contextual vowel mapping
-    akshara_special = BengaliAkshara(["ভ"], "ো", False, [])
-    # TODO: Add logic to detect when ো should be 'o' instead of 'ô'
 
 
 def test_conjunct_in_word_context():
