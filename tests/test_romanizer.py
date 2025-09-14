@@ -34,11 +34,7 @@ from bengali_romanizer.lexer import Lexer
         # Complex regression and debug tests - moved to YAML
         # Debug syllable tokenization - moved to YAML
         
-        # Multi-word and punctuation tests - moved to YAML
-        
-        # Long text test - must preserve word boundaries
-        ("বাংলা নববর্ষ বাংলা পঞ্জিকা অনুসারে বছরের প্রথম দিনকে উদযাপন করার এক বিশেষ মুহূর্ত।", 
-         "bāṅlā nbbrṣ bāṅlā pñjikā ônusāre bchrer prthm dinke udyāpn krār ek biśeṣ muhūrt."),
+        # All tabular tests moved to YAML
     ],
 )
 def test_romanize_basic(bengali, expected):
