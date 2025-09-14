@@ -27,10 +27,7 @@ from bengali_romanizer.lexer import Lexer
         ("কি", "ki"),  # ক + ি = k + i
         ("কো", "ko"),  # ক + ো = k + o
         ("কা", "kā"),  # ক + া = k + ā (long a)
-        # Nasalization & special signs
-        ("বাংলা", "bāṅlā"),  # anusvara ং → ṅ, া = ā
-        ("দুঃখ", "duḥkha"),  # visarga ঃ → ḥ
-        ("চাঁদ", "cãd"),  # chandrabindu ঁ → tilde over ā
+        # Nasalization & special signs - moved to YAML
         # Diphthongs - moved to YAML
         # Rare vowels
         ("ঋ", "ṛ"),  # vocalic r

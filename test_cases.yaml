@@ -46,6 +46,19 @@ diphthongs:
     input: "কৌ"
     expected: "kau"
 
+nasalization:
+  - title: "Anusvara"
+    input: "বাংলা"
+    expected: "bāṅlā"
+  
+  - title: "Visarga" 
+    input: "দুঃখ"
+    expected: "duḥkha"
+  
+  - title: "Chandrabindu"
+    input: "চাঁদ"
+    expected: "cãd"
+
 word_separation:
   - title: "Two words with space"
     input: "বাংলা ভাষা"
