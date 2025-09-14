@@ -165,3 +165,23 @@ word_separation:
     input: "নববর্ষ"
     expected: "nbbrṣ"
     skip: "FIXME: Currently produces nababrṣ - inherent vowel issue in conjuncts"
+  
+  - title: "Comma and exclamation"
+    input: "বাংলা, ভাষা!"
+    expected: "bāṅlā, bhāṣā!"
+  
+  - title: "Bengali numbers"
+    input: "১২৩ বাংলা"
+    expected: "123 bāṅlā"
+  
+  - title: "Latin numbers"
+    input: "123 বাংলা"
+    expected: "123 bāṅlā"
+  
+  - title: "Parentheses"
+    input: "বাংলা (ভাষা)"
+    expected: "bāṅlā (bhāṣā)"
+  
+  - title: "Quotes"
+    input: 'বাংলা "ভাষা"'
+    expected: 'bāṅlā "bhāṣā"'

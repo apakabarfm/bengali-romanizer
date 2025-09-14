@@ -333,9 +333,19 @@ class BengaliAksharaTokenizer:
 
 class _BengaliTransliterator:
     """Simplified Bengali transliterator using syllable-based approach"""
+    
+    # Bengali to Latin digit mapping
+    DIGIT_MAP = {
+        '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4',
+        '৫': '5', '৬': '6', '৭': '7', '৮': '8', '৯': '9'
+    }
+    
+    # Affricates for chandrabindu rules
+    AFFRICATES = {"চ", "ছ", "জ", "ঝ"}
 
-    def __init__(self):
+    def __init__(self, translate_digits=True):
         self.tokenizer = BengaliAksharaTokenizer()
+        self.translate_digits = translate_digits
 
         # Reuse character mappings from tokenizer
         self.consonant_map = self.tokenizer.CONSONANTS
@@ -346,10 +356,6 @@ class _BengaliTransliterator:
             "ঁ": "̃",  # Candrabindu (handled specially)
             "ৎ": "t",  # Khanda-ta (without vowel)
         }
-
-
-        # Affricates for chandrabindu rules
-        self.AFFRICATES = {"চ", "ছ", "জ", "ঝ"}
 
     def __call__(self, text: str) -> str:
         """Transliterate Bengali text to Latin"""
@@ -363,6 +369,15 @@ class _BengaliTransliterator:
         while i < len(text):
             char = text[i]
             
+            # Handle Bengali digits
+            if char in self.DIGIT_MAP:
+                if self.translate_digits:
+                    result.append(self.DIGIT_MAP[char])
+                else:
+                    result.append(char)
+                i += 1
+                continue
+                
             # Preserve spaces and punctuation
             if char.isspace() or not char.isalpha():
                 result.append(char)

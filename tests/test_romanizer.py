@@ -34,16 +34,7 @@ from bengali_romanizer.lexer import Lexer
         # Complex regression and debug tests - moved to YAML
         # Debug syllable tokenization - moved to YAML
         
-        # Multi-word tests
-        ("বাংলা ভাষা", "bāṅlā bhāṣā"),  # Bengali language - test spaces
-        ("নমস্কার বন্ধু", "namskār bndhu"),  # Hello friend
-        
-        # Punctuation and numbers tests
-        ("বাংলা, ভাষা!", "bāṅlā, bhāṣā!"),  # Comma and exclamation
-        ("১২৩ বাংলা", "১২৩ bāṅlā"),  # Bengali numbers should stay
-        ("123 বাংলা", "123 bāṅlā"),  # Latin numbers should stay
-        ("বাংলা (ভাষা)", "bāṅlā (bhāṣā)"),  # Parentheses should stay
-        ('বাংলা "ভাষা"', 'bāṅlā "bhāṣā"'),  # Quotes should stay
+        # Multi-word and punctuation tests - moved to YAML
         
         # Long text test - must preserve word boundaries
         ("বাংলা নববর্ষ বাংলা পঞ্জিকা অনুসারে বছরের প্রথম দিনকে উদযাপন করার এক বিশেষ মুহূর্ত।", 
