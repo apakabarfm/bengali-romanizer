@@ -85,6 +85,23 @@ def test_bengali_akshara_translation_methods():
     assert result == "ki"  # ka→k + i
 
 
+def test_final_m_after_halant():
+    """Micro-test: ম after ধর্ should be 'm' not 'ma'"""
+
+    # Create context: ধর্ followed by ম
+    dhr_akshara = BengaliAkshara(["ধ", "র"], None, True, [])  # ধর্ with halant
+    m_akshara = BengaliAkshara(["ম"], None, False, [])  # ম
+
+    transliterator = _BengaliTransliterator()
+
+    # Test ম in context after halant conjunct
+    result = transliterator._translate_akshara_with_context(
+        m_akshara, [dhr_akshara, m_akshara], 1, transliterator.vowel_map
+    )
+
+    assert result == "m", "ম after halant conjunct should be 'm' not 'ma'"
+
+
 def test_context_detection_for_visarga():
     """TDD test for দুঃখ - visarga breaks vowel context"""
     
@@ -104,6 +121,31 @@ def test_context_detection_for_visarga():
     vowel_map = transliterator.vowel_map
     result = transliterator._translate_akshara_with_context(aksharas[1], aksharas, 1, vowel_map)
     assert result == "kha", "খ after visarga should keep inherent vowel"
+
+
+def test_context_detection_for_andolon():
+    """TDD test for আন্দোলন context detection"""
+
+    # Mock আন্দোলন tokenization: [আ], [নদো], [ল], [ন]
+    aksharas = [
+        BengaliAkshara([], "আ", False, []),  # আ → ā (independent vowel)
+        BengaliAkshara(["ন", "দ"], "ো", False, []),  # নদো → ndo (conjunct + vowel)
+        BengaliAkshara(["ল"], None, False, []),  # ল → should be 'l' (after vowel)
+        BengaliAkshara(
+            ["ন"], None, False, []
+        ),  # ন → should be 'n' (word continues after vowel)
+    ]
+
+    # Test context detection for each position
+    transliterator = _BengaliTransliterator()
+
+    # Test position 2: ল after নদো (which has vowel ো)
+    context_result_2 = transliterator._has_vowel_context(aksharas, 2)
+    assert context_result_2, "ল should detect vowel context from preceding নদো"
+
+    # Test position 3: ন after ল (which followed vowel context)
+    context_result_3 = transliterator._has_vowel_context(aksharas, 3)
+    assert context_result_3, "ন should detect vowel context propagated through word"
 
 
 def test_r_phala_conjunct():
