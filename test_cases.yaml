@@ -37,6 +37,15 @@ nukta_consonants:
     input: "ড়"
     expected: "ṛ"
 
+diphthongs:
+  - title: "AI diphthong"
+    input: "কৈ" 
+    expected: "kai"
+  
+  - title: "AU diphthong"
+    input: "কৌ"
+    expected: "kau"
+
 word_separation:
   - title: "Two words with space"
     input: "বাংলা ভাষা"

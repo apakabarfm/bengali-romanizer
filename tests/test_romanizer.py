@@ -31,9 +31,7 @@ from bengali_romanizer.lexer import Lexer
         ("বাংলা", "bāṅlā"),  # anusvara ং → ṅ, া = ā
         ("দুঃখ", "duḥkha"),  # visarga ঃ → ḥ
         ("চাঁদ", "cãd"),  # chandrabindu ঁ → tilde over ā
-        # Diphthongs
-        ("কৈ", "kai"),  # ঐ → ai
-        ("কৌ", "kau"),  # ঔ → au
+        # Diphthongs - moved to YAML
         # Rare vowels
         ("ঋ", "ṛ"),  # vocalic r
         # -phala clusters
