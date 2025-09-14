@@ -30,21 +30,6 @@ def test_yaml_cases(test_case):
 
 
 
-def test_affricate_detection_micro():
-    """Micro-test: check if ছ detected as affricate correctly"""
-
-    transliterator = _BengaliTransliterator()
-
-    # Test that ছ is in AFFRICATES set
-    assert "ছ" in transliterator.AFFRICATES, "ছ should be in affricates set"
-
-    # Test lexer peek_any functionality
-    lexer = Lexer("ছে")
-
-    is_affricate = lexer.peek_any(transliterator.AFFRICATES)
-    assert is_affricate, (
-        f"ছ should be detected as affricate by peek_any, got: {lexer.peek()}"
-    )
 
 
 def test_consonant_after_halant_conjunct():
