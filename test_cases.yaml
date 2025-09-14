@@ -59,6 +59,19 @@ nasalization:
     input: "চাঁদ"
     expected: "cãd"
 
+phala_clusters:
+  - title: "R-phala cluster"
+    input: "ক্র"
+    expected: "kra"
+  
+  - title: "Y-phala cluster"
+    input: "ত্য"
+    expected: "tya"
+  
+  - title: "Triple cluster"
+    input: "স্ক্র"
+    expected: "skra"
+
 word_separation:
   - title: "Two words with space"
     input: "বাংলা ভাষা"

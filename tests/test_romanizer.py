@@ -31,11 +31,7 @@ from bengali_romanizer.lexer import Lexer
         # Diphthongs - moved to YAML
         # Rare vowels
         ("ঋ", "ṛ"),  # vocalic r
-        # -phala clusters
-        ("ক্র", "kra"),  # r-phala
-        ("ত্য", "tya"),  # ya-phala
-        # Triple cluster
-        ("স্ক্র", "skra"),  # s + k + r
+        # -phala clusters - moved to YAML
         # Special consonants with dot below
         ("ড়", "ṛ"),  # ḍ + nukta → ṛ
         # Additional edge cases
