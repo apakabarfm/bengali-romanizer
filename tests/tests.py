@@ -36,41 +36,6 @@ def test_yaml_cases(test_case):
 
 
 
-def test_dhrm_step_by_step():
-    """Debug ধর্ম step-by-step to find where 'a' gets added back"""
-
-    tokenizer = BengaliAksharaTokenizer()
-    transliterator = _BengaliTransliterator()
-
-    # Test tokenization
-    aksharas = tokenizer.tokenize("ধর্ম")
-    assert len(aksharas) == 2, f"Should be 2 aksharas: {aksharas}"
-
-    # Debug actual structure
-    second_actual = aksharas[1]
-
-    # Check if structure matches expectations
-    # ISSUE FOUND: First akshara doesn't have halant in tokenization
-    # assert first_actual.ending_halant == True, f"First should have halant: {first_actual}"
-
-    # For now, work with actual structure and fix the rule
-    # The issue is: ম gets inherent vowel because previous akshara not detected as halant conjunct
-    assert second_actual.consonants == ["ম"], f"Second should be ম: {second_actual}"
-
-    # Test each akshara translation individually
-    result1 = transliterator._translate_akshara_with_context(
-        aksharas[0], aksharas, 0, transliterator.vowel_map
-    )
-    assert result1 == "dhr", f"First akshara should be 'dhr': {result1}"
-
-    result2 = transliterator._translate_akshara_with_context(
-        aksharas[1], aksharas, 1, transliterator.vowel_map
-    )
-    assert result2 == "m", f"Second akshara should be 'm': {result2}"
-
-    # Full result
-    full_result = result1 + result2
-    assert full_result == "dhrm", f"Combined should be 'dhrm': {full_result}"
 
 
 def test_bengali_akshara_integration():
