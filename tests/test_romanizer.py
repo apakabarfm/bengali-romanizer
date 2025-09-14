@@ -67,6 +67,17 @@ from bengali_romanizer.lexer import Lexer
         # Debug syllable tokenization
         ("ধ", "dha"),  # Single consonant
         ("র", "ra"),  # Single consonant
+        
+        # Multi-word tests
+        ("বাংলা ভাষা", "bāṅlā bhāṣā"),  # Bengali language - test spaces
+        ("নমস্কার বন্ধু", "namskār bndhu"),  # Hello friend
+        
+        # Punctuation and numbers tests
+        ("বাংলা, ভাষা!", "bāṅlā, bhāṣā!"),  # Comma and exclamation
+        ("১২৩ বাংলা", "১২৩ bāṅlā"),  # Bengali numbers should stay
+        ("123 বাংলা", "123 bāṅlā"),  # Latin numbers should stay
+        ("বাংলা (ভাষা)", "bāṅlā (bhāṣā)"),  # Parentheses should stay
+        ('বাংলা "ভাষা"', 'bāṅlā "bhāṣā"'),  # Quotes should stay
     ],
 )
 def test_romanize_basic(bengali, expected):

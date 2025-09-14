@@ -347,8 +347,6 @@ class _BengaliTransliterator:
             "ৎ": "t",  # Khanda-ta (without vowel)
         }
 
-        # Words where ো maps to 'o' instead of 'ô' (from test evidence)
-        self.vowel_o_exceptions = {"ভোরতের", "ষোড়শ"}
 
         # Affricates for chandrabindu rules
         self.AFFRICATES = {"চ", "ছ", "জ", "ঝ"}
@@ -358,14 +356,48 @@ class _BengaliTransliterator:
         if not text:
             return ""
 
-        # Check for word-specific vowel exceptions
-        vowel_map = self.vowel_map.copy()
-        if text in self.vowel_o_exceptions:
-            vowel_map["ো"] = "o"  # Override ô → o for specific words
+        # Process character by character, preserving non-Bengali characters
+        result = []
+        i = 0
+        
+        while i < len(text):
+            char = text[i]
+            
+            # Preserve spaces and punctuation
+            if char.isspace() or not char.isalpha():
+                result.append(char)
+                i += 1
+                continue
+                
+            # Check if this is start of Bengali text
+            if char in self.tokenizer.CONSONANTS or char in self.tokenizer.INDEPENDENT_VOWELS:
+                # Extract Bengali word
+                word_start = i
+                while i < len(text) and (text[i] in self.tokenizer.CONSONANTS or 
+                                       text[i] in self.tokenizer.INDEPENDENT_VOWELS or
+                                       text[i] in self.tokenizer.VOWEL_SIGNS or
+                                       text[i] in self.tokenizer.SPECIAL_MARKS or
+                                       text[i] == self.tokenizer.HALANT):
+                    i += 1
+                    
+                bengali_word = text[word_start:i]
+                
+                # Use standard vowel map
+                vowel_map = self.vowel_map
 
-        # Tokenize into akshara (orthographic syllables)
-        aksharas = self.tokenizer.tokenize(text)
+                # Tokenize and transliterate this word
+                aksharas = self.tokenizer.tokenize(bengali_word)
+                word_result = self._transliterate_aksharas(aksharas, bengali_word, vowel_map)
+                result.append(word_result)
+            else:
+                # Non-Bengali alphabetic character - pass through
+                result.append(char)
+                i += 1
 
+        return unicodedata.normalize("NFC", "".join(result))
+    
+    def _transliterate_aksharas(self, aksharas: List[BengaliAkshara], original_word: str, vowel_map: dict) -> str:
+        """Transliterate a list of aksharas for a single word"""
         # Convert each akshara to Latin with context awareness
         result = []
         for i, akshara in enumerate(aksharas):
@@ -379,7 +411,6 @@ class _BengaliTransliterator:
                 and prev_akshara.vowel == "া"
                 and akshara.consonants == ["য়"]
                 and not akshara.vowel
-                and text in ["অধ্যায়"]
             ):  # Only for specific words
                 # Replace previous া with ô and current য় with y
                 if result and result[-1].endswith("ā"):
