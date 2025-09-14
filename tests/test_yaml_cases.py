@@ -6,7 +6,7 @@ from bengali_romanizer import romanize
 
 def load_test_cases():
     """Load test cases from YAML file"""
-    yaml_file = Path(__file__).parent.parent / "test_cases.yaml"
+    yaml_file = Path(__file__).parent / "test_cases.yaml"
     with open(yaml_file, 'r', encoding='utf-8') as f:
         return yaml.safe_load(f)
 

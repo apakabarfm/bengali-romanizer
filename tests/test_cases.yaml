@@ -72,6 +72,20 @@ phala_clusters:
     input: "স্ক্র"
     expected: "skra"
 
+rare_vowels:
+  - title: "Vocalic R"
+    input: "ঋ"
+    expected: "ṛ"
+
+edge_cases:
+  - title: "Final consonant with inherent vowel"
+    input: "খ"
+    expected: "kha"
+  
+  - title: "Single consonant at word end"
+    input: "দ"
+    expected: "da"
+
 word_separation:
   - title: "Two words with space"
     input: "বাংলা ভাষা"

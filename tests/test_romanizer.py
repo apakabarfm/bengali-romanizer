@@ -29,15 +29,7 @@ from bengali_romanizer.lexer import Lexer
         ("কা", "kā"),  # ক + া = k + ā (long a)
         # Nasalization & special signs - moved to YAML
         # Diphthongs - moved to YAML
-        # Rare vowels
-        ("ঋ", "ṛ"),  # vocalic r
-        # -phala clusters - moved to YAML
-        # Special consonants with dot below
-        ("ড়", "ṛ"),  # ḍ + nukta → ṛ
-        # Additional edge cases
-        ("খ", "kha"),  # Final consonant should get 'a'
-        ("চা", "cā"),  # Consonant + long vowel (native: া = ā)
-        ("দ", "da"),  # Single consonant at word end
+        # Rare vowels, nukta consonants, edge cases - moved to YAML
         # From user sample (targeted regressions)
         ("ভোরতের", "bhorter"),
         ("ধর্মীয়", "dhrmīy"),
