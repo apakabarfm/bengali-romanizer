@@ -86,6 +86,23 @@ edge_cases:
     input: "দ"
     expected: "da"
 
+regression_tests:
+  - title: "Morning related word"
+    input: "ভোরতের"
+    expected: "bhorter"
+  
+  - title: "Religious word"
+    input: "ধর্মীয়"
+    expected: "dhrmīy"
+  
+  - title: "Heritage word"
+    input: "ঐতিহ্য"
+    expected: "aitihyô"
+  
+  - title: "Chapter word"
+    input: "অধ্যায়"
+    expected: "ôdhyôy"
+
 word_separation:
   - title: "Two words with space"
     input: "বাংলা ভাষা"
