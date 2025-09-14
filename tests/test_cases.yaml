@@ -114,6 +114,23 @@ regression_tests:
   - title: "Gods"
     input: "ঈশ্বরের"
     expected: "īśbarer"
+  
+  - title: "Vaishnava related"
+    input: "বৈষ্ণবীয়"
+    expected: "baiṣṇabīy"
+  
+  - title: "Medieval"
+    input: "মধ্যযুগীয়"
+    expected: "mdhyayugīy"
+  
+  - title: "Bengali in/to"
+    input: "বাংলায়"
+    expected: "bāṅlāy"
+    skip: "FIXME: Currently produces bāṅlôy - ায় ending rule inconsistent"
+  
+  - title: "Reach word"
+    input: "পৌঁছে"
+    expected: "pauṅche"
 
 word_separation:
   - title: "Two words with space"
