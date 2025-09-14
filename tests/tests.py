@@ -153,34 +153,24 @@ def test_conjunct_in_word_context():
     assert result == "dhr", "ধর conjunct in word context should be dhr, not dhra"
 
 
-def test_final_ya_in_conjunct():
-    """TDD test for final য in conjuncts - should get ô instead of a"""
-    
-    # Test হ্য conjunct (from ঐতিহ্য)
-    akshara = BengaliAkshara(["হ", "য"], None, False, [])
-    
-    consonant_map = {"হ": "ha", "য": "ya"}
-    vowel_map = {}
-    
-    result = akshara._translate_conjunct_without_halant(consonant_map, vowel_map, is_word_final=True)
-    assert result == "hyô", "Final য in conjunct should get ô: হ্য → hyô"
-
-
-def test_vowel_sign_nukta_combination():
-    """TDD test for া + য় → ôy combination (from অধ্যায়)"""
-    
-    # Test য় with vowel sign া should produce ôy not āy
-    akshara = BengaliAkshara(["য়"], "া", False, [])
-    
-    consonant_map = {"য়": "y"}
+@pytest.mark.parametrize("consonants,vowel,halant,special,method,extra_args,expected,description", [
+    (["হ", "য"], None, False, [], "_translate_conjunct_without_halant", (True,), "hyô", "Final য in conjunct gets ô"),
+    (["য়"], "া", False, [], "_translate_single_consonant", (), "ôy", "য় + া special combination"),
+])
+def test_special_vowel_rules(consonants, vowel, halant, special, method, extra_args, expected, description):
+    """Test special vowel rules for edge cases"""
+    akshara = BengaliAkshara(consonants, vowel, halant, special)
+    consonant_map = {"হ": "ha", "য": "ya", "য়": "y"}
     vowel_map = {"া": "ā"}
     special_map = {}
     
-    result = akshara._translate_single_consonant(consonant_map, vowel_map, special_map)
-    
-    # Expected: য় + া should be 'ôy' (special combination), not 'yā' 
-    # This is based on test evidence from অধ্যায় → ôdhyôy
-    assert result == "ôy", "া + য় should produce ôy, not yā"
+    akshara_method = getattr(akshara, method)
+    if method == "_translate_conjunct_without_halant":
+        result = akshara_method(consonant_map, vowel_map, *extra_args)
+    else:
+        result = akshara_method(consonant_map, vowel_map, special_map)
+        
+    assert result == expected, description
 
 
 def test_adhyay_structure():
