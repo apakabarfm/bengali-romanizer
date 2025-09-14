@@ -9,38 +9,7 @@ from bengali_romanizer.romanizer import (
 from bengali_romanizer.lexer import Lexer
 
 
-@pytest.mark.parametrize(
-    "bengali,expected",
-    [
-        # Edge cases - boundary conditions
-        ("", ""),  # Empty string
-        ("ক", "ka"),  # Single consonant (no inherent vowel in table)
-        ("অ", "ô"),  # Single vowel (exact from original table)
-        # Basic combinations (native speaker confirmed)
-        ("ভক্তি", "bhakti"),  # ভ=bh, ক্ত=kt, ি=i → bh+kt+i
-        ("আন্দোলন", "āndoln"),  # আ=ā, ন্দ=nd, ো=o, ল=l, ন=n → ā+nd+o+l+n
-        ("প্রাচীন", "prācīn"),  # প্র=pr, া=ā, চ=c, ী=ī, ন=n → pr+ā+c+ī+n
-        # Conjunct consonants
-        ("ক্ত", "kt"),  # ক্ + ত = k + t
-        ("ন্দ", "nd"),  # ন্ + দ = n + d
-        # Vowel modifications (native speaker confirmed)
-        ("কি", "ki"),  # ক + ি = k + i
-        ("কো", "ko"),  # ক + ো = k + o
-        ("কা", "kā"),  # ক + া = k + ā (long a)
-        # Nasalization & special signs - moved to YAML
-        # Diphthongs - moved to YAML
-        # Rare vowels, nukta consonants, edge cases - moved to YAML
-        # Additional regression tests - moved to YAML
-        # Complex regression and debug tests - moved to YAML
-        # Debug syllable tokenization - moved to YAML
-        
-        # All tabular tests moved to YAML
-    ],
-)
-def test_romanize_basic(bengali, expected):
-    """Test basic romanization functionality"""
-    result = romanize(bengali)
-    assert result == unicodedata.normalize("NFC", expected)
+# All basic parametrized tests moved to YAML (test_yaml_cases.py)
 
 
 def test_bengali_syllable_tokenization():
