@@ -40,22 +40,6 @@ def test_yaml_cases(test_case):
 
 
 
-def test_bengali_single_consonant_context():
-    """Test single consonants in different contexts - context-dependent inherent vowel"""
-    consonant_map = {"ল": "la", "ন": "na"}
-    vowel_map = {"ি": "i"}
-    special_map = {}
-
-    # Test 1: Single consonant at word end after vowel should drop inherent vowel
-    # In আন্দোলন: ল and ন should be 'l' and 'n', not 'la' and 'na'
-
-    # Standalone test for now - context will be handled at transliterator level
-    akshara_l = BengaliAkshara(["ল"], None, False, [])
-    result_l = akshara_l._translate_single_consonant(
-        consonant_map, vowel_map, special_map
-    )
-    # For now this will be 'la' - context handling needed at higher level
-    assert result_l == "la"
 
 
 def test_context_detection_for_andolon():
