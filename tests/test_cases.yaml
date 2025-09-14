@@ -140,8 +140,7 @@ word_separation:
   - title: "Numbers and punctuation"
     input: "123 বাংলা!"
     expected: "123 bāṅlā!"
-
-problematic_cases:
+  
   - title: "Word with complex conjuncts"
     input: "নববর্ষ"
     expected: "nbbrṣ"
