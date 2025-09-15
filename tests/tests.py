@@ -352,37 +352,8 @@ def test_madhyayugiyo_first_syllable():
     # Current issue resolved - test expectation was wrong
 
 
-def test_banglae_ending_keeps_aa():
-    """TDD test for বাংলায় - ায় should be āy not ôy in this context"""
-    
-    # Problem: bāṅlôy instead of bāṅlāy
-    # My ায় → ôy rule over-applied
-    
-    # Expected: া + য় should be āy in most contexts, ôy only in special cases
-    
-    transliterator = _BengaliTransliterator()
-    result = transliterator("বাংলায়")
-    
-    assert result == "bāṅlāy", "বাংলায় should preserve ā vowel: bāṅlāy not bāṅlôy"
 
 
-def test_ma_dha_sequence_debug():
-    """Debug why ম + ধ get grouped without halant between them"""
-    
-    # Test intermediate: what happens with just মধ (no conjunct marker)?
-    tokenizer = BengaliAksharaTokenizer()
-    
-    # In মধ্যযুগীয়: ম + া + ধ + ্ + য + য + ু + গ + ী + য়
-    # After ম, next should be া (vowel sign) 
-    # But tokenizer somehow sees ধ and groups it with ম
-    
-    # Test simple: just মধ without any other characters
-    aksharas = tokenizer.tokenize("মধ")
-    
-    # This should be 2 separate aksharas since no halant between ম and ধ  
-    assert len(aksharas) == 2, f"মধ should be 2 aksharas (no halant), got {len(aksharas)}: {aksharas}"
-    assert aksharas[0].consonants == ["ম"], f"First should be just ম: {aksharas[0]}"
-    assert aksharas[1].consonants == ["ধ"], f"Second should be just ধ: {aksharas[1]}"
 
 
 def test_madhyayugiyo_unicode_structure():

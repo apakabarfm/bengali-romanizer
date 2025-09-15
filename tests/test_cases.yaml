@@ -109,6 +109,10 @@ edge_cases:
   - title: "Single R consonant"
     input: "র"
     expected: "ra"
+  
+  - title: "Two consonants without halant"
+    input: "মধ"
+    expected: "madha"
 
 regression_tests:
   - title: "Morning related word"
