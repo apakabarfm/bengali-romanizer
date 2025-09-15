@@ -23,7 +23,7 @@ pip install git+https://github.com/apakabarfm/bengali-romanizer
 >>> bengali_romanizer.romanize('ভক্তি')
 'bhakti'
 >>> bengali_romanizer.romanize('আন্দোলন')
-'āndôln'
+'āndoln'
 >>> bengali_romanizer.romanize('প্রাচীন')
 'prācīn'
 ```
