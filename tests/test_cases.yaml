@@ -11,15 +11,15 @@ basic_romanization:
     input: "অ"
     expected: "ô"
   
-  - title: "Consonant with vowel sign"
+  - title: "Consonant with vowel sign (native speaker confirmed)"
     input: "কি"
     expected: "ki"
   
-  - title: "O-kar vowel sign"
+  - title: "O-kar vowel sign (native speaker confirmed)"
     input: "কো"
     expected: "ko"
   
-  - title: "A-kar vowel sign"
+  - title: "A-kar vowel sign (native speaker confirmed)"
     input: "কা" 
     expected: "kā"
 
@@ -28,7 +28,7 @@ conjunct_consonants:
     input: "ক্ত"
     expected: "kt"
   
-  - title: "Complex word with conjunct"
+  - title: "Complex word with conjunct (native speaker confirmed)"
     input: "ভক্তি"
     expected: "bhakti"
   
