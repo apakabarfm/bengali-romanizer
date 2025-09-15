@@ -333,13 +333,21 @@ class BengaliAksharaTokenizer:
 
 class _BengaliTransliterator:
     """Simplified Bengali transliterator using syllable-based approach"""
-    
+
     # Bengali to Latin digit mapping
     DIGIT_MAP = {
-        '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4',
-        '৫': '5', '৬': '6', '৭': '7', '৮': '8', '৯': '9'
+        "০": "0",
+        "১": "1",
+        "২": "2",
+        "৩": "3",
+        "৪": "4",
+        "৫": "5",
+        "৬": "6",
+        "৭": "7",
+        "৮": "8",
+        "৯": "9",
     }
-    
+
     # Affricates for chandrabindu rules
     AFFRICATES = {"চ", "ছ", "জ", "ঝ"}
 
@@ -365,10 +373,10 @@ class _BengaliTransliterator:
         # Process character by character, preserving non-Bengali characters
         result = []
         i = 0
-        
+
         while i < len(text):
             char = text[i]
-            
+
             # Handle Bengali digits
             if char in self.DIGIT_MAP:
                 if self.translate_digits:
@@ -377,35 +385,41 @@ class _BengaliTransliterator:
                     result.append(char)
                 i += 1
                 continue
-                
+
             # Preserve spaces and punctuation
             if char.isspace() or not char.isalpha():
                 result.append(char)
                 i += 1
                 continue
-                
+
             # Check if this is start of Bengali text (including nukta consonants)
-            if (char in self.tokenizer.CONSONANTS or 
-                char in self.tokenizer.INDEPENDENT_VOWELS or
-                (i + 1 < len(text) and char + text[i+1] in ['ড়', 'ঢ়', 'য়'])):
+            if (
+                char in self.tokenizer.CONSONANTS
+                or char in self.tokenizer.INDEPENDENT_VOWELS
+                or (i + 1 < len(text) and char + text[i + 1] in ["ড়", "ঢ়", "য়"])
+            ):
                 # Extract Bengali word
                 word_start = i
-                while i < len(text) and (text[i] in self.tokenizer.CONSONANTS or 
-                                       text[i] in self.tokenizer.INDEPENDENT_VOWELS or
-                                       text[i] in self.tokenizer.VOWEL_SIGNS or
-                                       text[i] in self.tokenizer.SPECIAL_MARKS or
-                                       text[i] == self.tokenizer.HALANT or
-                                       text[i] == '়'):
+                while i < len(text) and (
+                    text[i] in self.tokenizer.CONSONANTS
+                    or text[i] in self.tokenizer.INDEPENDENT_VOWELS
+                    or text[i] in self.tokenizer.VOWEL_SIGNS
+                    or text[i] in self.tokenizer.SPECIAL_MARKS
+                    or text[i] == self.tokenizer.HALANT
+                    or text[i] == "়"
+                ):
                     i += 1
-                    
+
                 bengali_word = text[word_start:i]
-                
+
                 # Use standard vowel map
                 vowel_map = self.vowel_map
 
                 # Tokenize and transliterate this word
                 aksharas = self.tokenizer.tokenize(bengali_word)
-                word_result = self._transliterate_aksharas(aksharas, bengali_word, vowel_map)
+                word_result = self._transliterate_aksharas(
+                    aksharas, bengali_word, vowel_map
+                )
                 result.append(word_result)
             else:
                 # Non-Bengali alphabetic character - pass through
@@ -413,8 +427,10 @@ class _BengaliTransliterator:
                 i += 1
 
         return unicodedata.normalize("NFC", "".join(result))
-    
-    def _transliterate_aksharas(self, aksharas: List[BengaliAkshara], original_word: str, vowel_map: dict) -> str:
+
+    def _transliterate_aksharas(
+        self, aksharas: List[BengaliAkshara], original_word: str, vowel_map: dict
+    ) -> str:
         """Transliterate a list of aksharas for a single word"""
         # Convert each akshara to Latin with context awareness
         result = []
