@@ -27,3 +27,6 @@ htmlcov/
 venv/
 ENV/
 env/
+# IDE
+.idea/
+.vscode/
