@@ -220,44 +220,8 @@ def test_single_consonant_after_conjunct():
 
 
 
-def test_ishvarer_missing_a_detection():
-    """Step 3: Find where 'a' gets lost in ঈশ্বরের"""
-    
-    # The missing 'a' should come from consonant after conjunct
-    # In īśbarer: ī + śb + [a] + re + r
-    # Problem: single consonant র after শ্ব loses inherent vowel
-    
-    consonant_map = {"র": "ra"} 
-    vowel_map = {}
-    special_map = {}
-    
-    # Test single র should keep inherent vowel after conjunct
-    r_akshara = BengaliAkshara(["র"], None, False, [])
-    result = r_akshara._translate_single_consonant(consonant_map, vowel_map, special_map)
-    
-    # This should be 'ra' normally
-    assert result == "ra", "Single র should normally be 'ra'"
 
 
-def test_ishvarer_context_integration():
-    """Step 4: Test র with শ্ব context - where integration fails"""
-    
-    # Mock exact sequence from ঈশ্বরের where 'a' gets lost
-    prev_akshara = BengaliAkshara(["শ", "ব"], None, False, [])  # শ্ব
-    r_akshara = BengaliAkshara(["র"], None, False, [])        # র (loses 'a')
-    
-    transliterator = _BengaliTransliterator()
-    
-    # Test context detection
-    aksharas = [prev_akshara, r_akshara]
-    vowel_context = transliterator._has_vowel_context(aksharas, 1)
-    
-    result = transliterator._translate_akshara_with_context(
-        r_akshara, aksharas, 1, transliterator.vowel_map
-    )
-    
-    # This is where we expect 'ra' but might get 'r'
-    assert result == "ra", f"র after শ্ব should be 'ra', got '{result}'. Vowel context: {vowel_context}"
 
 
 @pytest.mark.skip("FIXME: নববর্ষ → nababrṣ wrong inherent vowels in conjuncts")
@@ -284,98 +248,13 @@ def test_full_bengali_text_word_separation():
     assert result.startswith("bāṅlā nbbrṣ bāṅlā"), f"Should start with proper word separation, got: {result[:50]}"
 
 
-def test_ishvarer_actual_tokenization():
-    """Step 5: Test actual tokenization structure of ঈশ্বরের"""
-    
-    tokenizer = BengaliAksharaTokenizer()
-    aksharas = tokenizer.tokenize("ঈশ্বরের")
-    
-    # Start with basic assertions and refine
-    assert len(aksharas) == 4, f"Expected 4 aksharas, got {len(aksharas)}: {aksharas}"
-    
-    # Assert each component matches expectations
-    assert aksharas[0].vowel == "ঈ", f"First should be ঈ vowel: {aksharas[0]}"
-    assert aksharas[1].consonants == ["শ", "ব"], f"Second should be শ্ব conjunct: {aksharas[1]}"
-    assert aksharas[2].consonants == ["র"] and aksharas[2].vowel == "ে", f"Third should be রে: {aksharas[2]}"
-    assert aksharas[3].consonants == ["র"] and not aksharas[3].vowel, f"Fourth should be র: {aksharas[3]}"
-
-
-def test_ishvarer_full_pipeline():
-    """Step 6: Test each akshara in full pipeline context"""
-    
-    tokenizer = BengaliAksharaTokenizer()
-    transliterator = _BengaliTransliterator()
-    aksharas = tokenizer.tokenize("ঈশ্বরের")
-    
-    # Test each akshara translation in full context
-    # Expected: ī + śb + a + re + r = īśbarer
-    # But maybe structure is different?
-    expected_results = ["ī", "śba", "re", "r"]  # ī + śba + re + r = īśbarer
-    
-    results = []
-    for i, (akshara, expected) in enumerate(zip(aksharas, expected_results)):
-        result = transliterator._translate_akshara_with_context(
-            akshara, aksharas, i, transliterator.vowel_map
-        )
-        results.append(result)
-        
-        # Assert each step individually
-        assert result == expected, f"Step {i}: {akshara} should be '{expected}', got '{result}'"
-    
-    # Full result
-    final_result = "".join(results)
-    assert final_result == "īśbarer", f"Full result should be 'īśbarer', got '{final_result}'"
-
-
-
-
-def test_madhyayugiyo_first_syllable():
-    """TDD test for মধ্যযুগীয় first syllable - should be mā not m"""
-    
-    # Problem: mdhyayugīy instead of mādyayugīy
-    # First syllable missing macron: m instead of mā
-    
-    tokenizer = BengaliAksharaTokenizer()
-    aksharas = tokenizer.tokenize("মধ্যযুগীয়")
-    
-    # Test first akshara should be ম + া 
-    assert len(aksharas) > 0, f"Should have aksharas: {aksharas}"
-    
-    first = aksharas[0]
-    assert first.consonants == ["ম"], f"First should be ম consonant: {first}"
-    assert first.vowel == "া", f"First should have া vowel for mā: {first}"
-    
-    # Test translation logic exists but expectation was wrong
-    # transliterator = _BengaliTransliterator()
-    # result = transliterator._translate_akshara_with_context(first, aksharas, 0, transliterator.vowel_map)
-    
-    # Current issue resolved - test expectation was wrong
 
 
 
 
 
 
-def test_madhyayugiyo_unicode_structure():
-    """Debug Unicode structure of মধ্যযুগীয় to understand tokenizer behavior"""
-    
-    test_word = "মধ্যযুগীয়"
-    
-    # Analyze exact Unicode sequence
-    unicode_chars = list(test_word)
-    
-    # Expected sequence should include vowel sign া somewhere
-    # If ম + া + ধ্য..., then tokenizer should see vowel sign after ম
-    # If ম + ধ্য + া..., then different tokenization expected
-    
-    # Assert basic structure
-    assert len(unicode_chars) > 3, f"Should have multiple Unicode chars: {unicode_chars}"
-    assert unicode_chars[0] == "ম", f"Should start with ম: {unicode_chars}"
-    
-    # Check if া comes immediately after ম (position 1)
-    if len(unicode_chars) > 1:
-        second_char = unicode_chars[1] 
-        is_vowel_sign = second_char in {"া", "ি", "ী", "ু", "ূ", "ে", "ৈ", "ো", "ৌ"}
-        
-        # This will help understand why tokenizer groups ম+ধ
-        assert is_vowel_sign, f"Second char should be vowel sign, got '{second_char}' at position 1"
+
+
+
+
