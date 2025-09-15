@@ -43,6 +43,10 @@ conjunct_consonants:
   - title: "Conjunct plus consonant with vowel"
     input: "ধর্মী"
     expected: "dhrmī"
+  
+  - title: "Conjunct with inherent vowel exception"
+    input: "র্দ"
+    expected: "rda"
 
 nukta_consonants:
   - title: "Nukta retroflex"

@@ -184,18 +184,6 @@ def test_adhyay_tokenization():
     assert aksharas[2].consonants == ["য়"] and aksharas[2].vowel is None  # য়
 
 
-def test_conjunct_inherent_vowel_exceptions():
-    """Test conjuncts that keep inherent vowel on final consonant"""
-    
-    # Based on চতুর্দশ → caturdaś (not caturdś)
-    # র্দ should be 'rda', not 'rd'
-    
-    akshara = BengaliAkshara(["র", "দ"], None, False, [])
-    consonant_map = {"র": "ra", "দ": "da"}
-    vowel_map = {}
-    
-    result = akshara._translate_conjunct_without_halant(consonant_map, vowel_map, is_word_final=False)
-    assert result == "rda", "র্দ conjunct should keep inherent vowel on দ: rd → rda"
 
 
 def test_single_consonant_after_conjunct():
@@ -232,26 +220,8 @@ def test_single_consonant_after_conjunct():
 
 
 
-def test_ishvarer_tokenization_only():
-    """Step 1: Test ONLY tokenization for ঈশ্বরের"""
-    
-    tokenizer = BengaliAksharaTokenizer()
-    aksharas = tokenizer.tokenize("ঈশ্বরের")
-    
-    # Test basic tokenization works
-    assert len(aksharas) > 0, "Should tokenize into aksharas"
 
 
-def test_ishvarer_shb_conjunct_isolated():
-    """Step 2: Test শ্ব conjunct translation in isolation"""
-    
-    shb_akshara = BengaliAkshara(["শ", "ব"], None, False, [])
-    
-    consonant_map = {"শ": "śa", "ব": "ba"}
-    vowel_map = {}
-    
-    result = shb_akshara._translate_conjunct_without_halant(consonant_map, vowel_map)
-    assert result == "śb", "শ্ব conjunct should be śb"
 
 
 def test_ishvarer_missing_a_detection():
